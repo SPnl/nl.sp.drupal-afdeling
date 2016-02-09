@@ -1,0 +1,14 @@
+<?php
+
+function afdeling_node_info() {
+  return array(
+    'afdeling' => array(
+      'name' => 'Afdeling',
+      'base' => 'node_content',
+      'description' => 'Een afdeling.',
+      'title_label' => 'Naam',
+      'locked' => TRUE,
+    ),
+  );
+}
+

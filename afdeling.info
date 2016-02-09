@@ -1,0 +1,6 @@
+name = Afdeling
+core = 7.x
+
+dependencies[] = link
+
+package = "SP"
