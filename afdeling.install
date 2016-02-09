@@ -62,12 +62,125 @@ function afdeling_install() {
     );
     field_create_instance($instance);
   }
+
+  // Create province vocabulary.
+  $vocabulary = (object) array(
+      'name' => 'Provincies',
+      'description' => 'This vocabulary contains a list of provinces.',
+      'machine_name' => 'provincie',
+      );  
+  taxonomy_vocabulary_save($vocabulary);
+
+  // Add terms.
+  $vocabulary = taxonomy_vocabulary_machine_name_load('provincie');
+  $provincenames = array(
+    'Groningen',
+    'Friesland',
+    'Drenthe',
+    'Overijssel',
+    'Flevoland',
+    'Gelderland',
+    'Utrecht',
+    'Noord-Holland',
+    'Zuid-Holland',
+    'Zeeland',
+    'Noord-Brabant',
+    'Limburg',
+  );
+
+  foreach ($provincenames as $provincename) {
+    $term = (object) array(
+        'name' => $provincename,
+        'vid' => $vocabulary->vid,
+        );
+
+    taxonomy_term_save($term);
+  }
+
+  // Create regio term reference.
+  if (!field_info_field('regio')) {
+    $field = array(
+      'field_name' => 'regio',
+      'type' => 'taxonomy_term_reference',
+      'settings' => array(
+        'allowed_values' => array(
+          array(
+            'vocabulary' => 'regio',
+            'parent' => 0
+          ),
+        ),
+      ),
+    );
+    field_create_field($field);
+    $instance = array(
+      'field_name' => 'regio',
+      'entity_type' => 'node',
+      'label' => 'Regio',
+      'bundle' => 'afdeling',
+      'required' => FALSE,
+      'widget' => array(
+        'type' => 'options_select'
+      ),
+    );
+    field_create_instance($instance);
+  }
+
+  // Create region vocabulary.
+  $vocabulary = (object) array(
+      'name' => 'Regios',
+      'description' => 'This vocabulary contains a list of regions.',
+      'machine_name' => 'regio',
+      );  
+  taxonomy_vocabulary_save($vocabulary);
+
+  // Add terms.
+  $vocabulary = taxonomy_vocabulary_machine_name_load('regio');
+  $regionnames = array(
+    'Drenthe',
+    'Flevoland',
+    'Friesland',
+    'Gelderland Noord-en-Oost',
+    'Gelderland Zuid',
+    'Groningen',
+    'Haaglanden',
+    'Limburg Noord',
+    'Limburg Zuid',
+    'Noord-Brabant NoordOost',
+    'Noord-Brabant West',
+    'Noord-Brabant Zuidoost',
+    'Noord-Holland Midden',
+    'Noord-Holland Noord',
+    'Noord-Holland Zuid',
+    'Overijssel',
+    'Rijnmond Oost',
+    'Rijnmond West',
+    'Utrecht',
+    'Zeeland',
+    'Zuid-Holland Noord',
+  );
+
+  foreach ($regionnames as $regionname) {
+    $term = (object) array(
+        'name' => $regionname,
+        'vid' => $vocabulary->vid,
+        );
+
+    taxonomy_term_save($term);
+  }
 }
 
 /**
  * Implements hook_uninstall
  */
 function afdeling_uninstall(){
+  // Nodes types defined with hook_node_info are supposedly automaticly deleted on uninstall.
+  node_type_delete('afdeling');
+  // Delete fields.
   field_delete_field('link'); // removes field from the system
   field_delete_field('provincie'); // removes field from the system
+  // Delete vocabulary.
+  $vocabulary = taxonomy_vocabulary_machine_name_load('provincie');
+  taxonomy_vocabulary_delete($vocabulary->vid);
+  $vocabulary = taxonomy_vocabulary_machine_name_load('regio');
+  taxonomy_vocabulary_delete($vocabulary->vid);
 }
