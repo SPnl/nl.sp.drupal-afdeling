@@ -167,6 +167,33 @@ function afdeling_install() {
 
     taxonomy_term_save($term);
   }
+
+  // Create status field.
+  if (!field_info_field('afd_status')) {
+    $field = array(
+        'field_name' => 'afd_status',
+        'type' => 'text', // text
+    );
+    field_create_field($field);
+ 
+    // Create the instance on the bundle.
+    $instance = array(
+      'field_name' => 'afd_status',
+      'entity_type' => 'node',
+      'label' => 'Status',
+      'bundle' => 'afdeling',
+      'required' => FALSE, // default: FALSE
+      'settings' => array(
+         // Here you inform either or not you want this field showing up on the registration form.
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'type' => 'text_textfield',
+      ),
+    );
+    field_create_instance($instance);
+  }
+
 }
 
 /**
@@ -178,9 +205,39 @@ function afdeling_uninstall(){
   // Delete fields.
   field_delete_field('link'); // removes field from the system
   field_delete_field('provincie'); // removes field from the system
+  field_delete_field('regio'); // removes field from the system
+  field_delete_field('afd_status'); // removes field from the system
   // Delete vocabulary.
   $vocabulary = taxonomy_vocabulary_machine_name_load('provincie');
   taxonomy_vocabulary_delete($vocabulary->vid);
   $vocabulary = taxonomy_vocabulary_machine_name_load('regio');
   taxonomy_vocabulary_delete($vocabulary->vid);
+}
+
+function afdeling_update_7001(&$sandbox) {
+  // Create status field.
+  if (!field_info_field('afd_status')) {
+    $field = array(
+        'field_name' => 'afd_status',
+        'type' => 'text', // text
+    );
+    field_create_field($field);
+ 
+    // Create the instance on the bundle.
+    $instance = array(
+      'field_name' => 'afd_status',
+      'entity_type' => 'node',
+      'label' => 'Status',
+      'bundle' => 'afdeling',
+      'required' => FALSE, // default: FALSE
+      'settings' => array(
+         // Here you inform either or not you want this field showing up on the registration form.
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'type' => 'text_textfield',
+      ),
+    );
+    field_create_instance($instance);
+  }
 }
