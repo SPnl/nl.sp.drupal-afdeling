@@ -9,6 +9,8 @@ function afdeling_install() {
   $types = node_type_get_types();
   node_type_save($types['afdeling']);
 
+  variable_set('comment_afdeling', 1); // COMMENT_NODE_CLOSED
+
   // Create link field.
   if (!field_info_field('link')) {
     $field = array(
