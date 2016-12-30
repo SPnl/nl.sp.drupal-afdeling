@@ -196,6 +196,32 @@ function afdeling_install() {
     field_create_instance($instance);
   }
 
+  // Create id field.
+  if (!field_info_field('afd_id')) {
+    $field = array(
+        'field_name' => 'afd_id',
+        'type' => 'number_integer',
+    );
+    field_create_field($field);
+ 
+    // Create the instance on the bundle.
+    $instance = array(
+      'field_name' => 'afd_id',
+      'entity_type' => 'node',
+      'label' => 'Status',
+      'bundle' => 'afdeling',
+      'required' => FALSE, // default: FALSE
+      'settings' => array(
+         // Here you inform either or not you want this field showing up on the registration form.
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'type' => 'number',
+      ),
+    );
+    field_create_instance($instance);
+  }
+
 }
 
 /**
@@ -238,6 +264,34 @@ function afdeling_update_7001(&$sandbox) {
       ),
       'widget' => array(
         'type' => 'text_textfield',
+      ),
+    );
+    field_create_instance($instance);
+  }
+}
+
+function afdeling_update_7002(&$sandbox) {
+  // Create id field.
+  if (!field_info_field('afd_id')) {
+    $field = array(
+        'field_name' => 'afd_id',
+        'type' => 'number_integer', // text
+    );
+    field_create_field($field);
+ 
+    // Create the instance on the bundle.
+    $instance = array(
+      'field_name' => 'afd_id',
+      'entity_type' => 'node',
+      'label' => 'Id',
+      'bundle' => 'afdeling',
+      'required' => FALSE, // default: FALSE
+      'settings' => array(
+         // Here you inform either or not you want this field showing up on the registration form.
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'type' => 'number',
       ),
     );
     field_create_instance($instance);
