@@ -2,5 +2,6 @@ name = Afdeling
 core = 7.x
 
 dependencies[] = link
+dependencies[] = taxonomy
 
 package = "sprbs"
