@@ -208,7 +208,7 @@ function afdeling_install() {
     $instance = array(
       'field_name' => 'afd_id',
       'entity_type' => 'node',
-      'label' => 'Status',
+      'label' => 'Afdeling id',
       'bundle' => 'afdeling',
       'required' => FALSE, // default: FALSE
       'settings' => array(
@@ -217,6 +217,32 @@ function afdeling_install() {
       ),
       'widget' => array(
         'type' => 'number',
+      ),
+    );
+    field_create_instance($instance);
+  }
+
+  // Email field.
+  if (!field_info_field('afd_email')) {
+    $field = array(
+        'field_name' => 'afd_email',
+        'type' => 'text',
+    );
+    field_create_field($field);
+ 
+    // Create the instance on the bundle.
+    $instance = array(
+      'field_name' => 'afd_email',
+      'entity_type' => 'node',
+      'label' => 'Afdeling email',
+      'bundle' => 'afdeling',
+      'required' => FALSE, // default: FALSE
+      'settings' => array(
+         // Here you inform either or not you want this field showing up on the registration form.
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'type' => 'text_textfield',
       ),
     );
     field_create_instance($instance);
@@ -235,6 +261,8 @@ function afdeling_uninstall(){
   field_delete_field('provincie'); // removes field from the system
   field_delete_field('regio'); // removes field from the system
   field_delete_field('afd_status'); // removes field from the system
+  field_delete_field('afd_id'); // removes field from the system
+  field_delete_field('afd_email'); // removes field from the system
   // Delete vocabulary.
   $vocabulary = taxonomy_vocabulary_machine_name_load('provincie');
   taxonomy_vocabulary_delete($vocabulary->vid);
@@ -283,7 +311,7 @@ function afdeling_update_7002(&$sandbox) {
     $instance = array(
       'field_name' => 'afd_id',
       'entity_type' => 'node',
-      'label' => 'Id',
+      'label' => 'Afdeling id',
       'bundle' => 'afdeling',
       'required' => FALSE, // default: FALSE
       'settings' => array(
@@ -292,6 +320,34 @@ function afdeling_update_7002(&$sandbox) {
       ),
       'widget' => array(
         'type' => 'number',
+      ),
+    );
+    field_create_instance($instance);
+  }
+}
+
+function afdeling_update_7003(&$sandbox) {
+  // Create email field.
+  if (!field_info_field('afd_email')) {
+    $field = array(
+        'field_name' => 'afd_email',
+        'type' => 'text',
+    );
+    field_create_field($field);
+ 
+    // Create the instance on the bundle.
+    $instance = array(
+      'field_name' => 'afd_email',
+      'entity_type' => 'node',
+      'label' => 'Afdeling email',
+      'bundle' => 'afdeling',
+      'required' => FALSE, // default: FALSE
+      'settings' => array(
+         // Here you inform either or not you want this field showing up on the registration form.
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'type' => 'text_textfield',
       ),
     );
     field_create_instance($instance);
