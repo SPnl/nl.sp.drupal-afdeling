@@ -3,5 +3,6 @@ core = 7.x
 
 dependencies[] = link
 dependencies[] = taxonomy
+dependencies[] = number
 
 package = "sprbs"
